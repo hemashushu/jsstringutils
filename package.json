@@ -1,0 +1,37 @@
+{
+  "name": "jsstringutils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hemashushu/jsstringutils.git"
+  },
+  "keywords": [
+    "utility",
+    "object"
+  ],
+  "author": "Hippo Spark <hippospark@gmail.com> (https://twitter.com/hemashushu)",
+  "license": "SEE LICENSE IN <LICENSE.md>",
+  "bugs": {
+    "url": "https://github.com/hemashushu/jsstringutils/issues"
+  },
+  "homepage": "https://github.com/hemashushu/jsstringutils#readme",
+  "devDependencies": {
+    "mocha": "^8.3.2"
+  },
+  "dependencies": {
+    "change-case": "^4.1.2",
+    "grapheme-breaker": "^0.3.2",
+    "html-escaper": "^3.0.3",
+    "jsexception": "github:hemashushu/jsexception",
+    "jsobjectutils": "github:hemashushu/jsobjectutils",
+    "lower-case": "^2.0.2",
+    "title-case": "^3.0.3",
+    "upper-case": "^2.0.2",
+    "uslug": "^1.0.4"
+  }
+}
