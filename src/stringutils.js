@@ -596,7 +596,7 @@ class StringUtils {
         } else if (Array.isArray(obj)) {
             result = [];
             for (let item of obj) {
-                result.push(StringUtils.changeObjectKeysCase(item));
+                result.push(StringUtils.changeObjectKeysCase(item, caseType));
             }
 
         } else if (obj instanceof Date) {
@@ -852,37 +852,13 @@ class StringUtils {
         return hash.digest('hex');
     }
 
-    //     static getMaxLengthText(text, length) {
-    //         if (text.length < length) {
-    //             return text;
-    //         }else {
-    //             return text.substring(0, length);
-    //         }
-    //     }
-    //
-    //     static substringByLength(text, startIndex, length) {
-    //         return text.substring(startIndex, startIndex + length);
-    //     }
-    //
-    //     static substringLeftByLength(text, startIndexExclude, length) {
-    //         if (startIndexExclude < 1) {
-    //             return '';
-    //         }
-    //
-    //         let endIndex = startIndexExclude - length;
-    //         if (endIndex < 0) {
-    //             endIndex = 0;
-    //         }
-    //
-    //         return text.substring(endIndex, startIndexExclude);
-    //     }
+    static get stringPlaceholderPattern() {
+        return stringPlaceholderPattern;
+    }
 
-
+    static get stringFormatSpecifierPattern() {
+        return stringFormatSpecifierPattern;
+    }
 }
-
-// export constants
-
-// StringUtils.placeholderPattern = stringPlaceholderPattern;
-// StringUtils.WordType = UnicodeCharType;
 
 module.exports = StringUtils;
