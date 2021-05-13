@@ -1,4 +1,4 @@
-const ObjectUtils = require('jsobjectutils');
+const {ObjectUtils} = require('jsobjectutils');
 const crypto = require('crypto');
 const graphemeBreaker = require('grapheme-breaker');
 const uslug = require('uslug');

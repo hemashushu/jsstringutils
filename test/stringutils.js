@@ -1,5 +1,5 @@
 const assert = require('assert/strict');
-const ObjectUtils = require('jsobjectutils');
+const {ObjectUtils} = require('jsobjectutils');
 
 const StringUtils = require('../src/stringutils');
 const CaseType = require('../src/casetype');
