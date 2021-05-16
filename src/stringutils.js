@@ -1,4 +1,4 @@
-const {ObjectUtils} = require('jsobjectutils');
+const { ObjectUtils } = require('jsobjectutils');
 const crypto = require('crypto');
 const graphemeBreaker = require('grapheme-breaker');
 const uslug = require('uslug');
@@ -103,6 +103,10 @@ const CJKCharRanges = [
     0x2CEB0, 0x2EBEF, // CJK Unified Ideographs Extension F
     0x2F800, 0x2FA1F, // CJK Compatibility Ideographs Supplement
 ];
+
+const camelCasePattern = '^([a-z][a-z0-9]*)([A-Z][a-z0-9]*)*$';
+const spaceCasePattern = '^([a-z][a-z0-9]*)( [a-z][a-z0-9]*)*$';
+const dashCasePattern = '^([a-z][a-z0-9]*)(-[a-z][a-z0-9]*)*$';
 
 class StringUtils {
 
@@ -530,6 +534,16 @@ class StringUtils {
     }
 
     /**
+     * 判断字符串大小写为 camel case 格式。
+     *
+     * @param {*} text
+     * @returns
+     */
+    static isCamelCase(text) {
+        return new RegExp(camelCasePattern).test(text);
+    }
+
+    /**
      * 转换文本大小写为空格式
      *
      * e.g.
@@ -556,6 +570,16 @@ class StringUtils {
     }
 
     /**
+     * 判断字符串大小写为 space case 格式。
+     *
+     * @param {*} text
+     * @returns
+     */
+    static isSpaceCase(text) {
+        return new RegExp(spaceCasePattern).test(text);
+    }
+
+    /**
      * 转换文本大小写为横线式
      *
      * e.g.
@@ -578,6 +602,16 @@ class StringUtils {
         // key = key.toLowerCase();
         // key = key.trim();
         // return key;
+    }
+
+    /**
+     * 判断字符串大小写为 dash case 格式。
+     *
+     * @param {*} text
+     * @returns
+     */
+    static isDashCase(text) {
+        return new RegExp(dashCasePattern).test(text);
     }
 
     /**

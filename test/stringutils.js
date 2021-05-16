@@ -122,14 +122,54 @@ describe('StringUtils Test', () => {
         assert.equal(StringUtils.camelCaseNamePath(s1), 'somePath.to.someDirectory.textFile');
     });
 
+    it('Test isCamelCase()', ()=>{
+        assert(StringUtils.isCamelCase('abc'));
+        assert(StringUtils.isCamelCase('abcFooBar'));
+        assert(StringUtils.isCamelCase('abcHTMLText'));
+        assert(StringUtils.isCamelCase('abc1Foo2Bar3'));
+        assert(!StringUtils.isCamelCase('Abc'));
+        assert(!StringUtils.isCamelCase('AbcFooBar'));
+        assert(!StringUtils.isCamelCase('abc-foo-bar'));
+        assert(!StringUtils.isCamelCase('abc foo bar'));
+        assert(!StringUtils.isCamelCase('abc.foo.bar'));
+    });
+
     it('Test spaceCase()', ()=>{
         let s1 = 'This is an example';
         assert.equal(StringUtils.spaceCase(s1), 'this is an example');
     });
 
+    it('Test isSpaceCase()', ()=>{
+        assert(StringUtils.isSpaceCase('abc'));
+        assert(StringUtils.isSpaceCase('abc foo bar'));
+        assert(StringUtils.isSpaceCase('abc a k a xyz'));
+        assert(StringUtils.isSpaceCase('abc1 foo2 bar3'));
+        assert(!StringUtils.isSpaceCase('Abc'));
+        assert(!StringUtils.isSpaceCase('AbcFooBar'));
+        assert(!StringUtils.isSpaceCase('abcFooBar'));
+        assert(!StringUtils.isSpaceCase('Abc Foo Bar'));
+        assert(!StringUtils.isSpaceCase('abc-foo-bar'));
+        assert(!StringUtils.isSpaceCase('abc.foo.bar'));
+    });
+
     it('Test dashCase()', ()=>{
         let s1 = 'This is an example';
         assert.equal(StringUtils.dashCase(s1), 'this-is-an-example');
+    });
+
+    it('Test isDashCase()', ()=>{
+        assert(StringUtils.isDashCase('abc'));
+        assert(StringUtils.isDashCase('abc-foo-bar'));
+        assert(StringUtils.isDashCase('abc-a-k-a-xyz'));
+        assert(StringUtils.isDashCase('abc1-foo2-bar3'));
+        assert(!StringUtils.isDashCase('Abc'));
+        assert(!StringUtils.isDashCase('AbcFooBar'));
+        assert(!StringUtils.isDashCase('abcFooBar'));
+        assert(!StringUtils.isDashCase('Abc Foo Bar'));
+        assert(!StringUtils.isDashCase('abc foo bar'));
+        assert(!StringUtils.isDashCase('abc-2-foo'));
+        assert(!StringUtils.isDashCase('abc-Foo'));
+        assert(!StringUtils.isDashCase('abc.foo.bar'));
     });
 
     it('Test changeObjectKeysCase()', ()=>{
@@ -206,7 +246,6 @@ describe('StringUtils Test', () => {
             }
         }));
     });
-
 
     it('Test isCJKChar()', ()=>{
         assert(StringUtils.isCJKChar('好'));
