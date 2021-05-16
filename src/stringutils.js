@@ -168,6 +168,21 @@ class StringUtils {
     }
 
     /**
+     * 转换文本当中的正则表达式字符。
+     *
+     * 用于从用户输入的文本当中安全地构建正则表达式。
+     *
+     * @param {*} text
+     * @returns
+     */
+    static escapeRegularExpress(text) {
+        // the regular express characters:
+		// "^$\\.*+?()[]{}|"
+
+        return text.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    /**
      * 比较字符串
      *
      * 返回值：

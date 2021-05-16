@@ -25,6 +25,14 @@ describe('StringUtils Test', () => {
         assert.equal(r2, s1);
     });
 
+    it('Test escapeRegularExpress()', ()=>{
+        let s1 = '^$\\.*+?()[]{}|';
+        let e1 = String.raw`\^\$\\\.\*\+\?\(\)\[\]\{\}\|`;
+
+        let r1 = StringUtils.escapeRegularExpress(s1);
+        assert.equal(r1, e1);
+    });
+
     it('Test compare()', ()=>{
         let c1 = StringUtils.compare('abc', 'xyz');
         let c2 = StringUtils.compare('abc', 'abc');
