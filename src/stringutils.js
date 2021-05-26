@@ -1,7 +1,5 @@
-const { ObjectUtils } = require('jsobjectutils');
 const crypto = require('crypto');
 const uslug = require('uslug');
-const { IllegalArgumentException } = require('jsexception');
 const { escape, unescape } = require('html-escaper');
 const {
     camelCase,
@@ -20,16 +18,10 @@ const {
 const { titleCase } = require('title-case');
 const { lowerCase, localeLowerCase } = require('lower-case');
 const { upperCase, localeUpperCase } = require('upper-case');
+const GraphemeBreaker = require('../libs/grapheme-breaker-mjs-mod');
 
-let GraphemeBreaker;
-
-// 加载 MJS 模块 grapheme-breaker-mjs
-let loadGraphemeBreaker = async () =>{
-    let m = await import('../libs/grapheme-breaker-mjs-1.0.1/src/GraphemeBreaker.mjs');
-    GraphemeBreaker = m.default;
-};
-
-loadGraphemeBreaker();
+const { ObjectUtils } = require('jsobjectutils');
+const { IllegalArgumentException } = require('jsexception');
 
 const UnicodeCharType = require('./unicodechartype');
 const CaseType = require('./casetype');

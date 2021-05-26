@@ -30,6 +30,7 @@
     "jsobjectutils": "github:hemashushu/jsobjectutils",
     "lower-case": "^2.0.2",
     "title-case": "^3.0.3",
+    "unicode-trie": "^2.0.0",
     "upper-case": "^2.0.2",
     "uslug": "^1.0.4"
   }

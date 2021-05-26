@@ -1,9 +1,11 @@
-import classesmjs from './classes-v13.0.0.mjs'
+// import classesmjs from './classes-v13.0.0.mjs' // MOD::REM
+const classesmjs = require('./classes-v13.0.0'); // MOD::ADD
 const trie = classesmjs.trie
 const { Other, Prepend, CR, LF, Control, Extend, Regional_Indicator, SpacingMark, L, V, T, LV, LVT, ZWJ, ExtPict} = classesmjs.classes
 
 //import UnicodeTrie from 'unicode-trie'
-import UnicodeTrie from './unicode-trie/index.mjs'
+// import UnicodeTrie from './unicode-trie/index.mjs' // MOD::REM
+const UnicodeTrie = require('unicode-trie'); // MOD::ADD
 
 let data = null
 if (globalThis['window']) {
@@ -153,10 +155,12 @@ const getUnicodeByteOffset = function(str, start, unicodeOffset) {
   return start
 }
 
-const exports = {}
+// const exports = {} // MOD::REM
+const gb = {}; // MOD::ADD
 
+// MOD::rename 'exports' into 'gb'
 // Returns the next grapheme break in the string after the given index
-exports.nextBreak = function(string, index = 0) {
+gb.nextBreak = function(string, index = 0) {
   if (index < 0) {
     return 0
   }
@@ -180,8 +184,9 @@ exports.nextBreak = function(string, index = 0) {
   return string.length
 }
 
+// MOD::rename 'exports' into 'gb'
 // Returns the next grapheme break in the string before the given index
-exports.previousBreak = function(string, index = string.length) {
+gb.previousBreak = function(string, index = string.length) {
   if (index > string.length) {
     return string.length
   }
@@ -213,12 +218,13 @@ exports.previousBreak = function(string, index = string.length) {
   }
 }
 
+// MOD::rename 'exports' into 'gb'
 // Breaks the given string into an array of grapheme cluster strings
-exports.break = function(str) {
+gb.break = function(str) {
   const res = []
   let index = 0
   let brk
-  while ((brk = exports.nextBreak(str, index)) < str.length) {
+  while ((brk = gb.nextBreak(str, index)) < str.length) {
     res.push(str.slice(index, brk))
     index = brk
   }
@@ -228,12 +234,13 @@ exports.break = function(str) {
   return res
 }
 
+// MOD::rename 'exports' into 'gb'
 // Returns the number of grapheme clusters there are in the given string
-exports.countBreaks = function(str) {
+gb.countBreaks = function(str) {
   let count = 0
   let index = 0
   let brk
-  while ((brk = exports.nextBreak(str, index)) < str.length) {
+  while ((brk = gb.nextBreak(str, index)) < str.length) {
     index = brk
     count++
   }
@@ -243,4 +250,5 @@ exports.countBreaks = function(str) {
   return count
 }
 
-export default exports
+// export default exports // MOD::REM
+module.exports = gb; // MOD::ADD
