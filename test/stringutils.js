@@ -333,6 +333,13 @@ describe('StringUtils Test', () => {
         assert(ObjectUtils.arrayEquals(c1, ['😜', '👍🏼', '👍', '🤦🏻‍♂️']));
     });
 
+    it('Test countUnicodeChars()', () => {
+        let s1 = '😜👍🏼👍🤦🏻‍♂️'; // 长度分别是 2,4,2,7
+        let c1 = StringUtils.countUnicodeChars(s1);
+
+        assert.equal(c1, 4);
+    });
+
     it('Test getUnicodeCharType()', () => {
         assert.equal(StringUtils.getUnicodeCharType('好'), UnicodeCharType.letter);
         assert.equal(StringUtils.getUnicodeCharType('！'), UnicodeCharType.punctuation);

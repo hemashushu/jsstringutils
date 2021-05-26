@@ -791,6 +791,15 @@ class StringUtils {
     }
 
     /**
+     * 计算 Unicode 字符个数
+     * @param {*} text
+     * @returns
+     */
+    static countUnicodeChars(text) {
+        return GraphemeBreaker.countBreaks(text);
+    }
+
+    /**
     * 判断一个 Unicode 字符是否为普通字符还是标点符号。
     *
     * @param {*} char
