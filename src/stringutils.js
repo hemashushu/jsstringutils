@@ -761,6 +761,16 @@ class StringUtils {
     }
 
     /**
+     *
+     * @param {*} text
+     * @param {*} offset 如果 offset 超出文本范围，则返回文本的长度。
+     * @returns
+     */
+    static getNextUnicodeOffset(text, offset) {
+        return GraphemeBreaker.nextBreak(text, offset);
+    }
+
+    /**
      * 获取指定位置的前一个 Unicode 字符。
      * @param {*} text
      * @param {*} offset 开始查找的位置（索引值），结果字符不包括此位置
@@ -771,6 +781,17 @@ class StringUtils {
     static getPreviousUnicodeChar(text, offset) {
         let previousOffset = GraphemeBreaker.previousBreak(text, offset);
         return text.substring(previousOffset, offset);
+    }
+
+    /**
+     *
+     * @param {*} text
+     * @param {*} offset 如果 offset 超出文本范围，则返回文本的长度。
+     *     如果 offset 为 0，则返回 0。
+     * @returns
+     */
+    static getPreviousUnicodeOffset(text, offset) {
+        return GraphemeBreaker.previousBreak(text, offset);
     }
 
     /**

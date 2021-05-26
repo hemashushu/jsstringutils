@@ -294,6 +294,31 @@ describe('StringUtils Test', () => {
 
     });
 
+    it('Test getNextUnicodeOffset()', () => {
+        let s1 = '😜👍🏼👍🤦🏻‍♂️'; // 长度分别是 2,4,2,7
+
+        //  2 4 2 7   <-- char length
+        // 0,2,6,8,15 <-- offset
+
+        let i1 = StringUtils.getNextUnicodeOffset(s1, 0);
+        assert.equal(i1, 2);
+
+        let i2 = StringUtils.getNextUnicodeOffset(s1, i1);
+        assert.equal(i2, 6);
+
+        let i3 = StringUtils.getNextUnicodeOffset(s1, i2);
+        assert.equal(i3, 8);
+
+        let i4 = StringUtils.getNextUnicodeOffset(s1, i3);
+        assert.equal(i4, 15);
+
+        let i5 = StringUtils.getNextUnicodeOffset(s1, i4);
+        assert.equal(i5, 15);
+
+        let i6 = StringUtils.getNextUnicodeOffset(s1, 100); // 超出范围
+        assert.equal(i6, 15);
+    });
+
     it('Test getPreviousUnicodeChar()', () => {
         let s1 = '😜👍🏼👍🤦🏻‍♂️'; // 长度分别是 2,4,2,7
 
@@ -324,6 +349,31 @@ describe('StringUtils Test', () => {
         let l5 = c5.length;
         assert.equal(c5, '');
         assert.equal(l5, 0);
+    });
+
+    it('Test getPreviousUnicodeOffset()', () => {
+        let s1 = '😜👍🏼👍🤦🏻‍♂️'; // 长度分别是 2,4,2,7
+
+        //  2 4 2 7   <-- char length
+        // 0,2,6,8,15 <-- offset
+
+        let i1 = StringUtils.getPreviousUnicodeOffset(s1, 100); // 超出范围
+        assert.equal(i1, 15);
+
+        let i2 = StringUtils.getPreviousUnicodeOffset(s1, i1);
+        assert.equal(i2, 8);
+
+        let i3 = StringUtils.getPreviousUnicodeOffset(s1, i2);
+        assert.equal(i3, 6);
+
+        let i4 = StringUtils.getPreviousUnicodeOffset(s1, i3);
+        assert.equal(i4, 2);
+
+        let i5 = StringUtils.getPreviousUnicodeOffset(s1, i4);
+        assert.equal(i5, 0);
+
+        let i6 = StringUtils.getPreviousUnicodeOffset(s1, 0);
+        assert.equal(i6, 0);
     });
 
     it('Test splitIntoUnicodeChar()', () => {
