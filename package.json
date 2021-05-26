@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "change-case": "^4.1.2",
-    "grapheme-breaker": "^0.3.2",
     "html-escaper": "^3.0.3",
     "jsexception": "github:hemashushu/jsexception",
     "jsobjectutils": "github:hemashushu/jsobjectutils",

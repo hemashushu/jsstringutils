@@ -1,20 +1,21 @@
 const assert = require('assert/strict');
-const {ObjectUtils} = require('jsobjectutils');
+const { ObjectUtils } = require('jsobjectutils');
 
-const StringUtils = require('../src/stringutils');
-const CaseType = require('../src/casetype');
-const HashAlgorithm = require('../src/hashalgorithm');
-const UnicodeCharType = require('../src/unicodechartype');
+const {
+    StringUtils,
+    CaseType,
+    HashAlgorithm,
+    UnicodeCharType } = require('../index');
 
 describe('StringUtils Test', () => {
-    it('Test escapeHtml()', ()=>{
+    it('Test escapeHtml()', () => {
         let s1 = 'test <DIV> & "quote" & \'single\'';
         let e1 = 'test &lt;DIV&gt; &amp; &quot;quote&quot; &amp; &#39;single&#39;'
         let r1 = StringUtils.escapeHtml(s1);
         assert.equal(r1, e1);
     });
 
-    it('Test unescapeHtml()', ()=>{
+    it('Test unescapeHtml()', () => {
         let e1 = 'test &lt;DIV&gt; &amp; &quot;quote&quot; &amp; &#39;single&#39;'
         let e2 = 'test &#60;DIV&#62; &#38; &#34;quote&#34; &#38; &#39;single&#39;'
         let s1 = 'test <DIV> & "quote" & \'single\'';
@@ -25,7 +26,7 @@ describe('StringUtils Test', () => {
         assert.equal(r2, s1);
     });
 
-    it('Test escapeRegularExpress()', ()=>{
+    it('Test escapeRegularExpress()', () => {
         let s1 = '^$\\.*+?()[]{}|';
         let e1 = String.raw`\^\$\\\.\*\+\?\(\)\[\]\{\}\|`;
 
@@ -33,7 +34,7 @@ describe('StringUtils Test', () => {
         assert.equal(r1, e1);
     });
 
-    it('Test compare()', ()=>{
+    it('Test compare()', () => {
         let c1 = StringUtils.compare('abc', 'xyz');
         let c2 = StringUtils.compare('abc', 'abc');
         let c3 = StringUtils.compare('xyz', 'abc');
@@ -43,7 +44,7 @@ describe('StringUtils Test', () => {
         assert.equal(c3, 1);
     });
 
-    it('Test splice()', ()=>{
+    it('Test splice()', () => {
         let s1 = 'Hello123World';
 
         let r1 = StringUtils.splice(s1, 5, 3);
@@ -56,17 +57,17 @@ describe('StringUtils Test', () => {
         assert.equal(r3, 'H00000d');
     });
 
-    it('Test format()', ()=> {
+    it('Test format()', () => {
         let s1 = 'Hello %s, my number is %d.';
         let r1 = StringUtils.format(s1, 'Foo', 123456);
 
         assert.equal(r1, 'Hello Foo, my number is 123456.');
     });
 
-    it('Test resolvePlaceholder()', ()=>{
+    it('Test resolvePlaceholder()', () => {
         let s1 = 'Hello ${name}, my number is ${number}.';
-        let r1 = StringUtils.resolvePlaceholder(s1, (placeholder)=>{
-            switch(placeholder){
+        let r1 = StringUtils.resolvePlaceholder(s1, (placeholder) => {
+            switch (placeholder) {
                 case 'name':
                     return 'Foo';
 
@@ -78,7 +79,7 @@ describe('StringUtils Test', () => {
         assert.equal(r1, 'Hello Foo, my number is 123456.');
     });
 
-    it('Test resolvePlaceholderByContextObject()', ()=>{
+    it('Test resolvePlaceholderByContextObject()', () => {
         let s1 = 'Hello ${user.name}, my number is ${user.number}.';
         let o1 = {
             user: {
@@ -91,13 +92,13 @@ describe('StringUtils Test', () => {
         assert.equal(r1, 'Hello Foo, my number is 123456.');
     });
 
-    it('Test slugify()', ()=>{
+    it('Test slugify()', () => {
         let s1 = 'Hello, I\'m Foo!';
         let r1 = StringUtils.slugify(s1);
-        assert.equal(r1,'hello-im-foo');
+        assert.equal(r1, 'hello-im-foo');
     });
 
-    it('Test slugifyFilePath()', ()=>{
+    it('Test slugifyFilePath()', () => {
         let s1 = '/usr/local/share/my demo.app';
         let r1 = StringUtils.slugifyFilePath(s1);
         assert.equal(r1, '/usr/local/share/my-demoapp');
@@ -120,17 +121,17 @@ describe('StringUtils Test', () => {
         assert.equal(StringUtils.changeCase(s1, CaseType.upper), 'THIS IS AN EXAMPLE');
     });
 
-    it('Test camelCase()', ()=>{
+    it('Test camelCase()', () => {
         let s1 = 'This is an example';
         assert.equal(StringUtils.camelCase(s1), 'thisIsAnExample');
     });
 
-    it('Test camelCaseNamePath()', ()=>{
+    it('Test camelCaseNamePath()', () => {
         let s1 = 'Some path.to.Some Directory.text-file';
         assert.equal(StringUtils.camelCaseNamePath(s1), 'somePath.to.someDirectory.textFile');
     });
 
-    it('Test isCamelCase()', ()=>{
+    it('Test isCamelCase()', () => {
         assert(StringUtils.isCamelCase('abc'));
         assert(StringUtils.isCamelCase('abcFooBar'));
         assert(StringUtils.isCamelCase('abcHTMLText'));
@@ -142,12 +143,12 @@ describe('StringUtils Test', () => {
         assert(!StringUtils.isCamelCase('abc.foo.bar'));
     });
 
-    it('Test spaceCase()', ()=>{
+    it('Test spaceCase()', () => {
         let s1 = 'This is an example';
         assert.equal(StringUtils.spaceCase(s1), 'this is an example');
     });
 
-    it('Test isSpaceCase()', ()=>{
+    it('Test isSpaceCase()', () => {
         assert(StringUtils.isSpaceCase('abc'));
         assert(StringUtils.isSpaceCase('abc foo bar'));
         assert(StringUtils.isSpaceCase('abc a k a xyz'));
@@ -160,12 +161,12 @@ describe('StringUtils Test', () => {
         assert(!StringUtils.isSpaceCase('abc.foo.bar'));
     });
 
-    it('Test dashCase()', ()=>{
+    it('Test dashCase()', () => {
         let s1 = 'This is an example';
         assert.equal(StringUtils.dashCase(s1), 'this-is-an-example');
     });
 
-    it('Test isDashCase()', ()=>{
+    it('Test isDashCase()', () => {
         assert(StringUtils.isDashCase('abc'));
         assert(StringUtils.isDashCase('abc-foo-bar'));
         assert(StringUtils.isDashCase('abc-a-k-a-xyz'));
@@ -180,7 +181,7 @@ describe('StringUtils Test', () => {
         assert(!StringUtils.isDashCase('abc.foo.bar'));
     });
 
-    it('Test changeObjectKeysCase()', ()=>{
+    it('Test changeObjectKeysCase()', () => {
         let o1 = {
             user: {
                 'first-name': 'Foo',
@@ -205,7 +206,7 @@ describe('StringUtils Test', () => {
         }));
     });
 
-    it('Test camelCaseObjectKeys()', ()=>{
+    it('Test camelCaseObjectKeys()', () => {
         let o1 = {
             user: {
                 'first-name': 'Foo',
@@ -230,7 +231,7 @@ describe('StringUtils Test', () => {
         }));
     });
 
-    it('Test spaceCaseObjectKeys()', ()=>{
+    it('Test spaceCaseObjectKeys()', () => {
         let o1 = {
             user: {
                 'first-name': 'Foo',
@@ -255,24 +256,84 @@ describe('StringUtils Test', () => {
         }));
     });
 
-    it('Test isCJKChar()', ()=>{
+    it('Test isCJKChar()', () => {
         assert(StringUtils.isCJKChar('好'));
         assert(!StringUtils.isCJKChar('g'));
     });
 
-    it('Test getNextUnicodeChar()', ()=>{
-        let s1 = '😜🇺🇸👍'; // 长度分别是 2,4,2
-        let r1 = StringUtils.getNextUnicodeChar(s1, 2);
-        assert.equal(r1, '🇺🇸');
+    it('Test getNextUnicodeChar()', () => {
+        let s1 = '😜👍🏼👍🤦🏻‍♂️'; // 长度分别是 2,4,2,7
+
+        //  2 4 2 7   <-- char length
+        // 0,2,6,8,15 <-- offset
+
+        let c1 = StringUtils.getNextUnicodeChar(s1, 0);
+        let l1 = c1.length;
+        assert.equal(c1, '😜');
+        assert.equal(l1, 2);
+
+        let c2 = StringUtils.getNextUnicodeChar(s1, l1);
+        let l2 = c2.length;
+        assert.equal(c2, '👍🏼');
+        assert.equal(l2, 4);
+
+        let c3 = StringUtils.getNextUnicodeChar(s1, l1 + l2);
+        let l3 = c3.length;
+        assert.equal(c3, '👍');
+        assert.equal(l3, 2);
+
+        let c4 = StringUtils.getNextUnicodeChar(s1, l1 + l2 + l3);
+        let l4 = c4.length;
+        assert.equal(c4, '🤦🏻‍♂️');
+        assert.equal(l4, 7);
+
+        let c5 = StringUtils.getNextUnicodeChar(s1, l1 + l2 + l3 + l4);
+        let l5 = c5.length;
+        assert.equal(c5, '');
+        assert.equal(l5, 0);
+
     });
 
-    it('Test getPreviousUnicodeChar()', ()=>{
-        let s1 = '😜🇺🇸👍'; // 长度分别是 2,4,2
-        let r1 = StringUtils.getPreviousUnicodeChar(s1, 2);
-        assert.equal(r1, '😜');
+    it('Test getPreviousUnicodeChar()', () => {
+        let s1 = '😜👍🏼👍🤦🏻‍♂️'; // 长度分别是 2,4,2,7
+
+        //  2 4 2 7   <-- char length
+        // 0,2,6,8,15 <-- offset
+
+        let c1 = StringUtils.getPreviousUnicodeChar(s1, 15);
+        let l1 = c1.length;
+        assert.equal(c1, '🤦🏻‍♂️');
+        assert.equal(l1, 7);
+
+        let c2 = StringUtils.getPreviousUnicodeChar(s1, 8);
+        let l2 = c2.length;
+        assert.equal(c2, '👍');
+        assert.equal(l2, 2);
+
+        let c3 = StringUtils.getPreviousUnicodeChar(s1, 6);
+        let l3 = c3.length;
+        assert.equal(c3, '👍🏼');
+        assert.equal(l3, 4);
+
+        let c4 = StringUtils.getPreviousUnicodeChar(s1, 2);
+        let l4 = c4.length;
+        assert.equal(c4, '😜');
+        assert.equal(l4, 2);
+
+        let c5 = StringUtils.getPreviousUnicodeChar(s1, 0);
+        let l5 = c5.length;
+        assert.equal(c5, '');
+        assert.equal(l5, 0);
     });
 
-    it('Test getUnicodeCharType()', ()=>{
+    it('Test splitIntoUnicodeChar()', () => {
+        let s1 = '😜👍🏼👍🤦🏻‍♂️'; // 长度分别是 2,4,2,7
+        let c1 = StringUtils.splitIntoUnicodeChar(s1);
+
+        assert(ObjectUtils.arrayEquals(c1, ['😜', '👍🏼', '👍', '🤦🏻‍♂️']));
+    });
+
+    it('Test getUnicodeCharType()', () => {
         assert.equal(StringUtils.getUnicodeCharType('好'), UnicodeCharType.letter);
         assert.equal(StringUtils.getUnicodeCharType('！'), UnicodeCharType.punctuation);
         assert.equal(StringUtils.getUnicodeCharType('g'), UnicodeCharType.letter);
@@ -280,8 +341,8 @@ describe('StringUtils Test', () => {
         assert.equal(StringUtils.getUnicodeCharType('1'), UnicodeCharType.letter);
     });
 
-    it('Test arrayIndexOfIgnoreCase()', ()=>{
-        let a1 = ['X', 'B', 'Y', 'A', 'b','x'];
+    it('Test arrayIndexOfIgnoreCase()', () => {
+        let a1 = ['X', 'B', 'Y', 'A', 'b', 'x'];
         let i1 = StringUtils.arrayIndexOfIgnoreCase(a1, 'y'); // 2
         let i2 = StringUtils.arrayIndexOfIgnoreCase(a1, 'b'); // 1
         let i3 = StringUtils.arrayIndexOfIgnoreCase(a1, 'x'); // 0
@@ -291,15 +352,15 @@ describe('StringUtils Test', () => {
         assert.equal(i3, 0);
     });
 
-    it('Test truncateTextByRanges()', ()=>{
+    it('Test truncateTextByRanges()', () => {
 
         let s1 = 'ab00cde000x0000z';
         // index: 0123456789012345
 
         let ranges1 = [
-            {start:2, end: 4},
-            {start:7, end: 10},
-            {start:11, end: 15},
+            { start: 2, end: 4 },
+            { start: 7, end: 10 },
+            { start: 11, end: 15 },
         ];
 
         let r1 = StringUtils.truncateTextByRanges(s1, ranges1);
@@ -310,7 +371,7 @@ describe('StringUtils Test', () => {
 
     });
 
-    it('Test hashText()', ()=>{
+    it('Test hashText()', () => {
         let s1 = 'abc';
         let h1 = 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';
 

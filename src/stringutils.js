@@ -1,6 +1,5 @@
 const { ObjectUtils } = require('jsobjectutils');
 const crypto = require('crypto');
-const graphemeBreaker = require('grapheme-breaker');
 const uslug = require('uslug');
 const { IllegalArgumentException } = require('jsexception');
 const { escape, unescape } = require('html-escaper');
@@ -21,6 +20,16 @@ const {
 const { titleCase } = require('title-case');
 const { lowerCase, localeLowerCase } = require('lower-case');
 const { upperCase, localeUpperCase } = require('upper-case');
+
+let GraphemeBreaker;
+
+// 加载 MJS 模块 grapheme-breaker-mjs
+let loadGraphemeBreaker = async () =>{
+    let m = await import('../libs/grapheme-breaker-mjs-1.0.1/src/GraphemeBreaker.mjs');
+    GraphemeBreaker = m.default;
+};
+
+loadGraphemeBreaker();
 
 const UnicodeCharType = require('./unicodechartype');
 const CaseType = require('./casetype');
@@ -177,7 +186,7 @@ class StringUtils {
      */
     static escapeRegularExpress(text) {
         // the regular express characters:
-		// "^$\\.*+?()[]{}|"
+        // "^$\\.*+?()[]{}|"
 
         return text.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
     }
@@ -709,7 +718,8 @@ class StringUtils {
      * 获取指定位置的下一个 Unicode 字符。
      *
      * @param {*} text
-     * @param {*} offset
+     * @param {*} offset 开始查找的位置（索引值）
+     *     如果索引值超出文本范围，将会返回空字符串
      * @returns
      */
     static getNextUnicodeChar(text, offset) {
@@ -748,13 +758,13 @@ class StringUtils {
         // - 💂‍♀️ (length = 5, U+1F482 U+200D U+2640 U+FE0F)
         // - 👩‍❤️‍💋‍👨 (length = 11, U+1F469 U+200D U+2764 U+FE0F U+200D U+1F48B U+200D U+1F468)
 
-        // GraphemeBreaker.nextBreak('😜🇺🇸👍', 3) // 长度分别是 2,4,2，所以结果 => 6
-        // GraphemeBreaker.previousBreak('😜🇺🇸👍', 3) // 长度分别是 2,4,2，所以结果 => 6
+        // '😜👍🏼👍🤦🏻‍♂️' // 长度分别是 2,4,2,7
+        // GraphemeBreaker.nextBreak('😜👍🏼👍🤦🏻‍♂️', 6)     // 返回结果 => 👍
+        // GraphemeBreaker.previousBreak('😜👍🏼👍🤦🏻‍♂️', 6) // 返回结果 => 👍🏼
         //
         // 参考
-        // https://github.com/foliojs/grapheme-breaker
-
-        let nextOffset = graphemeBreaker.nextBreak(text, offset);
+        // https://github.com/taisukef/grapheme-breaker-mjs
+        let nextOffset = GraphemeBreaker.nextBreak(text, offset);
         return text.substring(offset, nextOffset);
     }
 
@@ -762,11 +772,22 @@ class StringUtils {
      * 获取指定位置的前一个 Unicode 字符。
      * @param {*} text
      * @param {*} offset 开始查找的位置（索引值），结果字符不包括此位置
+     *     - 如果索引值超出文本范围，将会返回空字符串
+     *     - 如果索引值为 0，也会返回空字符串
      * @returns
      */
     static getPreviousUnicodeChar(text, offset) {
-        let previousOffset = graphemeBreaker.previousBreak(text, offset);
+        let previousOffset = GraphemeBreaker.previousBreak(text, offset);
         return text.substring(previousOffset, offset);
+    }
+
+    /**
+     * 将文本拆分为 Unicode 字符
+     * @param {*} text
+     * @returns 返回字符数组 [Char,...]
+     */
+    static splitIntoUnicodeChar(text) {
+        return GraphemeBreaker.break(text);
     }
 
     /**
