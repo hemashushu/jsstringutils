@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/hemashushu/jsstringutils#readme",
   "devDependencies": {
-    "mocha": "^8.3.2"
+    "mocha": "^8.3.2",
+    "node-fetch": "^2.6.1"
   },
   "dependencies": {
     "change-case": "^4.1.2",
