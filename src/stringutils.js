@@ -783,7 +783,7 @@ class StringUtils {
     }
 
     /**
-    * 判断一个 Unicode 字符是否为普通字符还是标点符号。
+    * 判断一个 Unicode 字符是否为普通字母（包括 CJK 文字）还是标点(包括符号）。
     *
     * @param {*} char
     * @param {*} wordType
@@ -794,22 +794,24 @@ class StringUtils {
         // https://www.regular-expressions.info/unicode.html#category
         // https://2ality.com/2017/07/regexp-unicode-property-escapes.html
 
-        let letterRegex = /([0-9\p{L}])/u;
-        let punctuationRegex = /([`\p{P}])/u;
+        let letterRegex = /[\p{L}\p{N}]/u;
+        let punctuationRegex = /[\p{P}\p{S}]/u;
 
         // 注：
-        // - '\p{L}' 不包含数字 [0-9]；
-        // - '\p{P}' 包含数字 [0-9]；
-        // - 当前方法将数字纳入 “字符” 范围，所以把 '[0-9]' 添加到
-        //   第一个正则表达式里；
-        // - '`' 即不是字符，也不是标点，所以添加到第二个正则表达式里。
+        // - '\p{L}' 字母（包括 CJK 文字）
+        // - '\p{N}' 数字 0-9
+        // - '\p{P}' 标点，如 "'!,;.
+        // - '\p{S}' 符号，如 `~$^
+        //
+        // 详细：
+        // https://javascript.info/regexp-unicode
 
         let isLetter = letterRegex.test(char);
         if (isLetter) {
             return UnicodeCharType.letter;
         } else {
-            let isPunc = punctuationRegex.test(char);
-            if (isPunc) {
+            let isPunctuation = punctuationRegex.test(char);
+            if (isPunctuation) {
                 return UnicodeCharType.punctuation;
             } else {
                 return UnicodeCharType.other;
@@ -818,12 +820,12 @@ class StringUtils {
     }
 
     static isUnicodeLetter(char) {
-        let letterRegex = /([0-9\p{L}])/u;
+        let letterRegex = /[\p{L}\p{N}]/u;
         return letterRegex.test(char);
     }
 
     static isUnicodePunctuation(char) {
-        let punctuationRegex = /([`\p{P}])/u;
+        let punctuationRegex = /[\p{P}\p{S}]/u;
         return punctuationRegex.test(char);
     }
 

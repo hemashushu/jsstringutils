@@ -392,10 +392,10 @@ describe('StringUtils Test', () => {
 
     it('Test getUnicodeCharType()', () => {
         assert.equal(StringUtils.getUnicodeCharType('好'), UnicodeCharType.letter);
-        assert.equal(StringUtils.getUnicodeCharType('！'), UnicodeCharType.punctuation);
         assert.equal(StringUtils.getUnicodeCharType('g'), UnicodeCharType.letter);
-        assert.equal(StringUtils.getUnicodeCharType('@'), UnicodeCharType.punctuation);
         assert.equal(StringUtils.getUnicodeCharType('1'), UnicodeCharType.letter);
+        assert.equal(StringUtils.getUnicodeCharType('！'), UnicodeCharType.punctuation);
+        assert.equal(StringUtils.getUnicodeCharType('@'), UnicodeCharType.punctuation);
     });
 
     it('Test arrayIndexOfIgnoreCase()', () => {
