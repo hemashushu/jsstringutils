@@ -122,7 +122,7 @@ class StringUtils {
     static escapeHtml(text) {
         return escape(text);
 
-        // HTML Escape 的原理如下：
+        // HTML Escape 的大致原理如下：
         //
         // const htmlEntityMap = {
         //     '&': '&amp;',
@@ -147,7 +147,7 @@ class StringUtils {
     static unescapeHtml(text) {
         return unescape(text);
 
-        // HTML Unescape 的原理如下：
+        // HTML Unescape 的大致原理如下：
         //
         // const reverseHtmlEntityMap = {
         //     '&amp;': '&',
@@ -169,7 +169,7 @@ class StringUtils {
     }
 
     /**
-     * 转换文本当中的正则表达式字符。
+     * 转换文本当中的正则表达式实体（entities）字符。
      *
      * 用于从用户输入的文本当中安全地构建正则表达式。
      *
@@ -177,7 +177,7 @@ class StringUtils {
      * @returns
      */
     static escapeRegularExpress(text) {
-        // the regular express characters:
+        // the regular express entities:
         // "^$\\.*+?()[]{}|"
 
         return text.replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -264,7 +264,7 @@ class StringUtils {
         let result = placeholderExp.exec(text);
         while (result !== null) {
             let length = result[0].length;
-            // let type = result[0].substring(1);
+            // let type = result[0].substring(1); // 暂时用不上
             if (result.index !== bufferPos) {
                 // add leading or gap string.
                 buffer.push(text.substring(bufferPos, result.index));
@@ -496,21 +496,6 @@ class StringUtils {
      */
     static camelCase(text) {
         return StringUtils.changeCase(text, CaseType.camel);
-
-        // let camel = text;
-        //
-        // if (camel.match(/[-_ ]/)) {
-        //     camel = camel.toLowerCase(); // ignore case
-        //     camel = camel.replace(/([-_ ])([a-zA-Z0-9])/g, (match, p1, p2) => {
-        //         return p2.toUpperCase();
-        //     });
-        // }
-        //
-        // if (camel.match(/^[A-Z]/)) {
-        //     camel = camel.charAt(0).toLowerCase() + camel.slice(1);
-        // }
-        //
-        // return camel;
     }
 
     /**
@@ -572,17 +557,6 @@ class StringUtils {
      */
     static spaceCase(text) {
         return StringUtils.changeCase(text, CaseType.space);
-
-        // let key = text;
-        // if (/^[A-Za-z0-9]+$/.test(key)) {
-        //     key = text.replace(/([A-Z])/g, ' $1');
-        // } else if (/[-_]/.test(key)) {
-        //     key = text.replace(/[-_]/g, ' ');
-        // }
-        // key = key.replace(/ {2,}/g, ' ');
-        // key = key.toLowerCase();
-        // key = key.trim();
-        // return key;
     }
 
     /**
@@ -607,17 +581,6 @@ class StringUtils {
      */
     static dashCase(text) {
         return StringUtils.changeCase(text, CaseType.dash);
-
-        // let key = text;
-        // if (/^[A-Za-z0-9]+$/.test(key)) {
-        //     key = text.replace(/([A-Z])/g, '-$1');
-        // } else if (/ /.test(key)) {
-        //     key = text.replace(/ /g, '-');
-        // }
-        // key = key.replace(/-{2,}/g, '-');
-        // key = key.toLowerCase();
-        // key = key.trim();
-        // return key;
     }
 
     /**
@@ -750,9 +713,16 @@ class StringUtils {
         // - 💂‍♀️ (length = 5, U+1F482 U+200D U+2640 U+FE0F)
         // - 👩‍❤️‍💋‍👨 (length = 11, U+1F469 U+200D U+2764 U+FE0F U+200D U+1F48B U+200D U+1F468)
 
-        // '😜👍🏼👍🤦🏻‍♂️' // 长度分别是 2,4,2,7
-        // GraphemeBreaker.nextBreak('😜👍🏼👍🤦🏻‍♂️', 6)     // 返回结果 => 👍
-        // GraphemeBreaker.previousBreak('😜👍🏼👍🤦🏻‍♂️', 6) // 返回结果 => 👍🏼
+        // '😜👍🏼👍🤦🏻‍♂️'
+        // 长度分别是 2,4,2,7
+        //
+        // 索引 6 对应的字符是 '👍'
+        //
+        // GraphemeBreaker.nextBreak('😜👍🏼👍🤦🏻‍♂️', 6)
+        // 返回结果 => 👍 后一个字符的索引，即 8
+        //
+        // GraphemeBreaker.previousBreak('😜👍🏼👍🤦🏻‍♂️', 6)
+        // 返回结果 => 👍🏼 的索引，即 2
         //
         // 参考
         // https://github.com/taisukef/grapheme-breaker-mjs
@@ -834,21 +804,6 @@ class StringUtils {
         //   第一个正则表达式里；
         // - '`' 即不是字符，也不是标点，所以添加到第二个正则表达式里。
 
-        // switch (wordType) {
-        //     case UnicodeCharType.letter:
-        //         {
-        //             return letterRegex.test(char) ?
-        //                 UnicodeCharType.letter : UnicodeCharType.other;
-        //         }
-        //
-        //     case UnicodeCharType.punctuation:
-        //         {
-        //             return punctuationRegex.test(char) ?
-        //                 UnicodeCharType.punctuation : UnicodeCharType.other;
-        //         }
-        //
-        //     default:
-        //         {
         let isLetter = letterRegex.test(char);
         if (isLetter) {
             return UnicodeCharType.letter;
@@ -860,8 +815,16 @@ class StringUtils {
                 return UnicodeCharType.other;
             }
         }
-        //     }
-        // }
+    }
+
+    static isUnicodeLetter(char) {
+        let letterRegex = /([0-9\p{L}])/u;
+        return letterRegex.test(char);
+    }
+
+    static isUnicodePunctuation(char) {
+        let punctuationRegex = /([`\p{P}])/u;
+        return punctuationRegex.test(char);
     }
 
     /**
@@ -873,15 +836,6 @@ class StringUtils {
      */
     static arrayIndexOfIgnoreCase(items, text) {
         let upperCaseText = text.toUpperCase();
-        // let pos = -1;
-        // for (let idx = 0; idx < items.length; idx++) {
-        //     if (items[idx].toUpperCase() === upperCaseText) {
-        //         pos = idx;
-        //         break;
-        //     }
-        // }
-        // return pos;
-
         return items.findIndex(item => {
             return item.toUpperCase() === upperCaseText;
         });
