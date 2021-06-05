@@ -20,7 +20,7 @@ const { lowerCase, localeLowerCase } = require('lower-case');
 const { upperCase, localeUpperCase } = require('upper-case');
 const GraphemeBreaker = require('../libs/grapheme-breaker-mjs-mod');
 
-const { ObjectUtils } = require('jsobjectutils');
+const { ObjectUtils, ObjectAccessor } = require('jsobjectutils');
 const { IllegalArgumentException } = require('jsexception');
 
 const UnicodeCharType = require('./unicodechartype');
@@ -384,7 +384,7 @@ class StringUtils {
      */
     static resolvePlaceholderByContextObject(text, contextObject) {
         return StringUtils.resolvePlaceholder(text, (placeholderName) => {
-            return ObjectUtils.getPropertyValueByNamePath(contextObject, placeholderName);
+            return ObjectAccessor.getPropertyValueByNamePath(contextObject, placeholderName);
         });
     }
 
